@@ -41,3 +41,7 @@ An example:
 Some others emulators in the web:
 * https://cryptii.com/pipes/enigma-machine
 * https://www.101computing.net/enigma-machine-emulator/
+
+## License
+
+This project is release under CC0 license (Creative Commons Zero)
