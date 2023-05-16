@@ -6,14 +6,17 @@
       You should have received a copy of the CC0 Public Domain Dedication along with this software. If not, see <http://creativecommons.org/publicdomain/zero/1.0/>.
 */
 
-package main
+package enigma
 
 import (
 	"testing"
 )
 
 func TestEncodeA(t *testing.T) {
-	cfg := config{rotors: [3]rotor{rotorI, rotorII, rotorIII}, positions: [3]rune{'A', 'A', 'A'}}
+	cfg := Config{
+		Rotors:    [3]Rotor{RotorI, RotorII, RotorIII},
+		Positions: [3]rune{'A', 'A', 'A'},
+	}
 	encrypted := applyRotors(&cfg, 'A')
 	if encrypted != 'Z' {
 		t.Error("error: ", string(encrypted))
@@ -21,7 +24,10 @@ func TestEncodeA(t *testing.T) {
 }
 
 func TestEncodeAWithPositionsAAB(t *testing.T) {
-	cfg := config{rotors: [3]rotor{rotorI, rotorII, rotorIII}, positions: [3]rune{'A', 'A', 'B'}}
+	cfg := Config{
+		Rotors:    [3]Rotor{RotorI, RotorII, RotorIII},
+		Positions: [3]rune{'A', 'A', 'B'},
+	}
 	encrypted := applyRotors(&cfg, 'A')
 	if encrypted != 'F' {
 		t.Error("error: ", string(encrypted))
@@ -29,7 +35,10 @@ func TestEncodeAWithPositionsAAB(t *testing.T) {
 }
 
 func TestEncodeAWithPositionsAAG(t *testing.T) {
-	cfg := config{rotors: [3]rotor{rotorI, rotorII, rotorIII}, positions: [3]rune{'A', 'A', 'G'}}
+	cfg := Config{
+		Rotors:    [3]Rotor{RotorI, RotorII, RotorIII},
+		Positions: [3]rune{'A', 'A', 'G'},
+	}
 	encrypted := applyRotors(&cfg, 'A')
 	if encrypted != 'G' {
 		t.Error("error: ", string(encrypted))
@@ -37,7 +46,11 @@ func TestEncodeAWithPositionsAAG(t *testing.T) {
 }
 
 func TestEncodeInverseRotorsAWithPositionsAAG(t *testing.T) {
-	cfg := config{rotors: [3]rotor{rotorI, rotorII, rotorIII}, positions: [3]rune{'A', 'A', 'G'}, debug: false}
+	cfg := Config{
+		Rotors:    [3]Rotor{RotorI, RotorII, RotorIII},
+		Positions: [3]rune{'A', 'A', 'G'},
+		Debug:     false,
+	}
 	encrypted := applyInverseRotors(&cfg, 'A')
 	if encrypted != 'H' {
 		t.Error("error: ", string(encrypted))
@@ -45,7 +58,11 @@ func TestEncodeInverseRotorsAWithPositionsAAG(t *testing.T) {
 }
 
 func TestEncodeInverseRotorsLWithPositionsAAG(t *testing.T) {
-	cfg := config{rotors: [3]rotor{rotorI, rotorII, rotorIII}, positions: [3]rune{'A', 'A', 'G'}, debug: false}
+	cfg := Config{
+		Rotors:    [3]Rotor{RotorI, RotorII, RotorIII},
+		Positions: [3]rune{'A', 'A', 'G'},
+		Debug:     false,
+	}
 	encrypted := applyInverseRotors(&cfg, 'L')
 	if encrypted != 'W' {
 		t.Error("error: ", string(encrypted))
@@ -53,7 +70,11 @@ func TestEncodeInverseRotorsLWithPositionsAAG(t *testing.T) {
 }
 
 func TestEncodeInverseRotorsAWithPositionsAAB(t *testing.T) {
-	cfg := config{rotors: [3]rotor{rotorI, rotorII, rotorIII}, positions: [3]rune{'A', 'A', 'B'}, debug: false}
+	cfg := Config{
+		Rotors:    [3]Rotor{RotorI, RotorII, RotorIII},
+		Positions: [3]rune{'A', 'A', 'B'},
+		Debug:     false,
+	}
 	encrypted := applyInverseRotors(&cfg, 'A')
 	if encrypted != 'P' {
 		t.Error("error: ", string(encrypted))
@@ -61,7 +82,10 @@ func TestEncodeInverseRotorsAWithPositionsAAB(t *testing.T) {
 }
 
 func TestEncodeB(t *testing.T) {
-	cfg := config{rotors: [3]rotor{rotorI, rotorII, rotorIII}, positions: [3]rune{'A', 'A', 'A'}}
+	cfg := Config{
+		Rotors:    [3]Rotor{RotorI, RotorII, RotorIII},
+		Positions: [3]rune{'A', 'A', 'A'},
+	}
 	encrypted := applyRotors(&cfg, 'B')
 	if encrypted != 'N' {
 		t.Error("error: ", encrypted)
@@ -69,7 +93,11 @@ func TestEncodeB(t *testing.T) {
 }
 
 func TestReverseRotor(t *testing.T) {
-	cfg := config{rotors: [3]rotor{rotorI, rotorII, rotorIII}, positions: [3]rune{'A', 'A', 'A'}, debug: false}
+	cfg := Config{
+		Rotors:    [3]Rotor{RotorI, RotorII, RotorIII},
+		Positions: [3]rune{'A', 'A', 'A'},
+		Debug:     false,
+	}
 	encrypted := applyInverseRotors(&cfg, 'A')
 	if encrypted != 'D' {
 		t.Error("error: ", encrypted)
@@ -77,7 +105,10 @@ func TestReverseRotor(t *testing.T) {
 }
 
 func TestReflector(t *testing.T) {
-	cfg := config{reflector: reflectorB, debug: false}
+	cfg := Config{
+		Reflector: ReflectorB,
+		Debug:     false,
+	}
 	encrypted := applyReflector(&cfg, 'A')
 	if encrypted != 'Y' {
 		t.Error("error: ", encrypted)
@@ -85,7 +116,9 @@ func TestReflector(t *testing.T) {
 }
 
 func TestSteckerBoard(t *testing.T) {
-	cfg := config{steckerboard: [10]plug{plug{'A', 'Q'}, plug{'R', 'W'}}}
+	cfg := Config{
+		Steckerboard: [10]Plug{{'A', 'Q'}, {'R', 'W'}},
+	}
 	encrypted := steckerboard(&cfg, 'Q')
 	if encrypted != 'A' {
 		t.Error("error: ", encrypted)
@@ -94,58 +127,75 @@ func TestSteckerBoard(t *testing.T) {
 }
 
 func TestRotorsMoveInAAA(t *testing.T) {
-	cfg := config{rotors: [3]rotor{rotorI, rotorII, rotorIII}, positions: [3]rune{'A', 'A', 'A'}}
+	cfg := Config{
+		Rotors:    [3]Rotor{RotorI, RotorII, RotorIII},
+		Positions: [3]rune{'A', 'A', 'A'},
+	}
 	rotorsMovement(&cfg)
-	newPositions := cfg.positions
+	newPositions := cfg.Positions
 	if differs(newPositions, [3]rune{'A', 'A', 'B'}) {
 		t.Error("error positions: ", string(newPositions[0]), string(newPositions[1]), string(newPositions[2]))
 	}
 }
 
 func TestRotorsMoveInAAG(t *testing.T) {
-	cfg := config{rotors: [3]rotor{rotorI, rotorII, rotorIII}, positions: [3]rune{'A', 'A', 'G'}}
+	cfg := Config{
+		Rotors:    [3]Rotor{RotorI, RotorII, RotorIII},
+		Positions: [3]rune{'A', 'A', 'G'},
+	}
 	rotorsMovement(&cfg)
-	newPositions := cfg.positions
+	newPositions := cfg.Positions
 	if differs(newPositions, [3]rune{'A', 'A', 'H'}) {
 		t.Error("error positions: ", string(newPositions[0]), string(newPositions[1]), string(newPositions[2]))
 	}
 }
 
 func TestRotorsMoveInABC(t *testing.T) {
-	cfg := config{rotors: [3]rotor{rotorI, rotorII, rotorIII}, positions: [3]rune{'A', 'B', 'C'}}
+	cfg := Config{
+		Rotors:    [3]Rotor{RotorI, RotorII, RotorIII},
+		Positions: [3]rune{'A', 'B', 'C'},
+	}
 	rotorsMovement(&cfg)
-	newPositions := cfg.positions
+	newPositions := cfg.Positions
 	if differs(newPositions, [3]rune{'A', 'B', 'D'}) {
 		t.Error("error positions: ", string(newPositions[0]), string(newPositions[1]), string(newPositions[2]))
 	}
 }
 
 func TestRotorsMoveFirstNotch(t *testing.T) {
-	cfg := config{rotors: [3]rotor{rotorI, rotorII, rotorIII}, reflector: reflectorB, positions: [3]rune{'A', 'B', 'V'}, debug: false}
+	cfg := Config{
+		Rotors:    [3]Rotor{RotorI, RotorII, RotorIII},
+		Reflector: ReflectorB,
+		Positions: [3]rune{'A', 'B', 'V'},
+		Debug:     false,
+	}
 	rotorsMovement(&cfg)
-	newPositions := cfg.positions
+	newPositions := cfg.Positions
 	if differs(newPositions, [3]rune{'A', 'C', 'W'}) {
 		t.Error("error positions: ", string(newPositions[0]), string(newPositions[1]), string(newPositions[2]))
 	}
 }
 
 func TestRotorsMoveDoubleStep(t *testing.T) {
-	cfg := config{rotors: [3]rotor{rotorI, rotorII, rotorIII}, positions: [3]rune{'A', 'E', 'V'}}
+	cfg := Config{
+		Rotors:    [3]Rotor{RotorI, RotorII, RotorIII},
+		Positions: [3]rune{'A', 'E', 'V'},
+	}
 	rotorsMovement(&cfg)
-	newPositions := cfg.positions
+	newPositions := cfg.Positions
 	if differs(newPositions, [3]rune{'A', 'F', 'W'}) {
 		t.Error("error positions: ", string(newPositions[0]), string(newPositions[1]), string(newPositions[2]))
 	}
 
 	rotorsMovement(&cfg)
-	newPositions = cfg.positions
+	newPositions = cfg.Positions
 	// double step
 	if differs(newPositions, [3]rune{'B', 'G', 'X'}) {
 		t.Error("error positions: ", string(newPositions[0]), string(newPositions[1]), string(newPositions[2]))
 	}
 
 	rotorsMovement(&cfg)
-	newPositions = cfg.positions
+	newPositions = cfg.Positions
 	// normale step
 	if differs(newPositions, [3]rune{'B', 'G', 'Y'}) {
 		t.Error("error positions: ", string(newPositions[0]), string(newPositions[1]), string(newPositions[2]))
@@ -153,40 +203,68 @@ func TestRotorsMoveDoubleStep(t *testing.T) {
 }
 
 func TestScenario1(t *testing.T) {
-	cfg := config{rotors: [3]rotor{rotorI, rotorII, rotorIII}, reflector: reflectorB, positions: [3]rune{'A', 'A', 'A'}, debug: false}
-	msg := encrypt(&cfg, "enigma")
+	cfg := Config{
+		Rotors:    [3]Rotor{RotorI, RotorII, RotorIII},
+		Reflector: ReflectorB,
+		Positions: [3]rune{'A', 'A', 'A'},
+		Debug:     false,
+	}
+	msg := Encrypt(&cfg, "enigma")
 	if msg != "FQGAHW" {
 		t.Error("error: ", msg)
 	}
 }
 
 func TestScenario2(t *testing.T) {
-	cfg := config{rotors: [3]rotor{rotorI, rotorII, rotorIII}, reflector: reflectorB, positions: [3]rune{'A', 'A', 'A'}, debug: false}
-	msg := encrypt(&cfg, "enigmagoemulator")
+	cfg := Config{
+		Rotors:    [3]Rotor{RotorI, RotorII, RotorIII},
+		Reflector: ReflectorB,
+		Positions: [3]rune{'A', 'A', 'A'},
+		Debug:     false,
+	}
+	msg := Encrypt(&cfg, "enigmagoemulator")
 	if msg != "FQGAHWZQWVGRBANF" {
 		t.Error("error: ", msg)
 	}
 }
 
 func TestScenarioWithSteckerboard(t *testing.T) {
-	cfg := config{rotors: [3]rotor{rotorI, rotorII, rotorIII}, reflector: reflectorB, positions: [3]rune{'A', 'C', 'H'}, steckerboard: [10]plug{plug{'A', 'Q'}, plug{'R', 'W'}}, debug: false}
-	msg := encrypt(&cfg, "gopherworld")
+	cfg := Config{
+		Rotors:       [3]Rotor{RotorI, RotorII, RotorIII},
+		Reflector:    ReflectorB,
+		Positions:    [3]rune{'A', 'C', 'H'},
+		Steckerboard: [10]Plug{{'A', 'Q'}, {'R', 'W'}},
+		Debug:        false,
+	}
+	msg := Encrypt(&cfg, "gopherworld")
 	if msg != "SFDXSDGJMJS" {
 		t.Error("error: ", msg)
 	}
 }
 
 func TestScenarioWithNoAlphabeticLetter(t *testing.T) {
-	cfg := config{rotors: [3]rotor{rotorI, rotorII, rotorIII}, reflector: reflectorB, positions: [3]rune{'A', 'C', 'H'}, steckerboard: [10]plug{plug{'A', 'Q'}, plug{'R', 'W'}}, debug: false}
-	msg := encrypt(&cfg, "gopher,world!!")
+	cfg := Config{
+		Rotors:       [3]Rotor{RotorI, RotorII, RotorIII},
+		Reflector:    ReflectorB,
+		Positions:    [3]rune{'A', 'C', 'H'},
+		Steckerboard: [10]Plug{{'A', 'Q'}, {'R', 'W'}},
+		Debug:        false,
+	}
+	msg := Encrypt(&cfg, "gopher,world!!")
 	if msg != "SFDXSDGJMJS" {
 		t.Error("error: ", msg)
 	}
 }
 
 func TestScenarioWithSpaces(t *testing.T) {
-	cfg := config{rotors: [3]rotor{rotorI, rotorII, rotorIII}, reflector: reflectorB, positions: [3]rune{'A', 'C', 'H'}, steckerboard: [10]plug{plug{'A', 'Q'}, plug{'R', 'W'}}, debug: false}
-	msg := encrypt(&cfg, "super gopher world")
+	cfg := Config{
+		Rotors:       [3]Rotor{RotorI, RotorII, RotorIII},
+		Reflector:    ReflectorB,
+		Positions:    [3]rune{'A', 'C', 'H'},
+		Steckerboard: [10]Plug{{'A', 'Q'}, {'R', 'W'}},
+		Debug:        false,
+	}
+	msg := Encrypt(&cfg, "super gopher world")
 	if msg != "GNDPGNWJBYUPGTQJGC" {
 		t.Error("error: ", msg)
 	}
