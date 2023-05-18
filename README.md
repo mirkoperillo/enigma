@@ -6,7 +6,7 @@ their communications
 ## Build
 
 ```
-go build
+make build
 ```
 
 ## Quickstart
@@ -14,7 +14,7 @@ go build
 ```
 enigma [options] "the message"
 
-Usage of ./enigma:
+Usage of ./bin/enigma:
   -positions value
     	positions of rotors. Default A,A,A
   -reflector string
