@@ -114,7 +114,7 @@ func validateRotorsFlag(rotors []string) (bool, error) {
 
 	for _, r := range rotors {
 		if !isInArray(r, validNames) {
-			return false, errors.New(fmt.Sprintf("Rotor %s not exist", r))
+			return false, fmt.Errorf("Rotor %s not exist", r)
 		}
 	}
 	return true, nil
@@ -123,9 +123,7 @@ func validateRotorsFlag(rotors []string) (bool, error) {
 func toConfig(rotors arrayFlags, reflector string, positions arrayFlags, steckerboard steckerFlags, verbose bool) enigma.Config {
 	debugCfg := verbose
 	var steckerboardCfg [10]enigma.Plug
-	for idx, p := range steckerboard {
-		steckerboardCfg[idx] = p
-	}
+	copy(steckerboardCfg[:], steckerboard)
 
 	reflectorCfg := flagToRotor(reflector)
 	rotorsCfg := [3]enigma.Rotor{flagToRotor(rotors[0]), flagToRotor(rotors[1]), flagToRotor(rotors[2])}
@@ -157,7 +155,7 @@ func flagToRotor(flag string) enigma.Rotor {
 func validateSteckerboardFlag(stecker []enigma.Plug) (bool, error) {
 	for _, p := range stecker {
 		if !isLetter(p.A) || !isLetter(p.B) {
-			return false, errors.New(fmt.Sprintf("Not valid value in (%s,%s)", string(p.A), string(p.B)))
+			return false, fmt.Errorf("Not valid value in (%s,%s)", string(p.A), string(p.B))
 		}
 	}
 	return true, nil
@@ -183,7 +181,7 @@ func validatePositionsFlag(positions []string) (bool, error) {
 	for _, r := range positions {
 		letter := []rune(r)
 		if !isLetter(letter[0]) {
-			return false, errors.New(fmt.Sprintf("Position %s is not valid", string(letter[0])))
+			return false, fmt.Errorf("Position %s is not valid", string(letter[0]))
 		}
 	}
 	return true, nil
@@ -192,7 +190,7 @@ func validatePositionsFlag(positions []string) (bool, error) {
 func validateReflectorFlag(reflector string) (bool, error) {
 	var validNames = [5]string{"B", "C"}
 	if !isInArray(reflector, validNames) {
-		return false, errors.New(fmt.Sprintf("Reflector %s not exist", reflector))
+		return false, fmt.Errorf("Reflector %s not exist", reflector)
 	}
 	return true, nil
 }
